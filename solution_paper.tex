@@ -1,0 +1,89 @@
+\documentclass[]{article}
+
+% import packages
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{titling}
+
+% set-up document
+\pagestyle{fancy}
+\lhead{\theauthor}
+\rhead{\thetitle}
+\setlength{\headwidth}{6.5in}
+\usepackage[margin=1in]{geometry}
+
+% set-up type-setting
+\setlength{\parindent}{0pt}
+
+% define useful commands
+
+
+\begin{document}
+
+
+\title{2017 ICM Problem D}
+\author{Team \#71782} %what's our team number?
+\date{\today}
+
+\maketitle
+
+
+% multicol if it ever gets to big to fit on one page
+% \begin{multicols}{2}
+\tableofcontents
+%\end{multicols}
+
+\newpage
+
+\section{Sketch of Paper}
+
+It feels that there are three main parts to this problem,
+
+\begin{enumerate}
+
+	\item Model the waiting time distribution.
+	\item Create a utility function whose domain is a waiting time distribution.
+	\item Use said models and utility function to evaluate potential modifications to how queueing is currently done.
+	
+
+\end{enumerate}
+
+\subsection{Waiting Time}
+
+I can think of three different ways that we can model the distribution of waiting times. 
+
+\begin{itemize}
+	\item The first is incredibly simple, but only works as a first approximation. Measure the potential throughput of each part of the process, and then take the minimum over all steps of the line to get the throughput of the entire line. For instance, if you can scan 10 people's boarding passes per minute, and you can only body-scan 2 people per minute, then the line is going to move along more or less at a pace of 2 people per minute. This probably works pretty well if you have a big choke point, and provides a first-order approximation at how to optimize the line.
+	
+	\item The second approach is much more precise, but mathematically dissatisfying. If you have a model of how often people arrive (basically has to be a nonhomogenous Poisson process with random group-size), as well with a distribution of how long it takes each person to be processed at each point of the line (you can also include correlations between these, so for example, a slow person may be slower in all parts of the line), this means that you can easily run Monte Carlo simulations on how long it takes people to get through the line, and get a very close approximation of the distribution.
+	
+	\item The third provides more stringent restrictions on our assumptions, but provide more mathematically beautiful results. Basically, you have to impose some distribution requirements on the wait and arrival times, and then you can model this as a well-studied stochastic process. Introductory literature \url{https://www.wikiwand.com/en/Queueing_theory}.
+\end{itemize}
+
+I think all of these approaches could be used in conjunction in our final paper, especially considering that there are only really two of them that would require work seeing as the first is so trivial.
+
+\subsection{Preference on Distributions}
+
+This part brings back memories of the 1011 modeling project days, and it may distinguish our paper the most. The problem statement is pretty explicit in that lower mean and lower variance are both good things to want in a distribution of waiting times. However, this still leaves a lot of open-endedness in how you compare two distributions. \medskip
+
+We can frame this as a social planner problem with a utility-maximizing representative agent (a person going on a flight) who is acting under close to perfect information. In particular, we suppose that the people taking flights know the distribution of waiting times (say that it was published by Google or some news agency), but don't know it conditional on the time of their flight (they don't know when the lines are longest). Under these conditions, the representative agent picks some amount of time to arrive at the airport before his/her flight departs. \medskip
+
+The social planner then cares about total dollar-denominated utility, which is made up of the cost of running a system with this distribution of wait times (machines and man-hours) as well as the cost of people waiting (average salary conditional on being on a flight, times the time that you picked in response to the wait-time distribution), and the cost of missed flights (which incur both a monetary cost of rebooking and a waiting time cost). \medskip
+
+This captures the idea that if the distribution is 2 minutes with 80\% probability, and 60 minutes otherwise. Then the smart agent will probably plan for the 60 minute case, and your system is pretty shitty. I haven't worked through the algebra of this modeling problem, but I hope that there is some aspect of the distribution (like fatness of the right tail), that is a more useful feature than just variance). \medskip
+
+{\bf Addendum:} We can (and probably should) also include ``Buy TSA Pre-Check" as part of the agent's choice-set. It's also possible that we weigh the time-cost of being in a TSA line differently from sitting at your gate, since the latter is generally more conducive to getting work done / doing something enjoyable.
+
+\subsection{Exploring Modifications}
+
+Of the three parts, I have the least insight into how to effectively execute this part. It feels that we just need to brainstorm a bunch of creative ideas so that we can plug them into our model. Preliminary thoughts (though far from comprehensive),
+
+\begin{itemize}
+	\item Give people a precise time to show up, sort of like making a reservation at a restaurant.
+	\item Have airlines modify departure times based on TSA lines
+	\item Have longer metal tables to start putting your stuff in (this is just from personal experience, but it's not rare to see the scanners not being at full capacity because people take time to take off their shoes / take laptops out of cases / etc).
+\end{itemize}
+
+\end{document}
